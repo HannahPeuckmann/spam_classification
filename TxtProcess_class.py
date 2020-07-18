@@ -3,53 +3,54 @@
 # WiSe20 20.06.20
 # class to process the enron e-mail corpus
 
+import spacy
+
 import nltk
 
 import logging
 
+# multiprocessing!
+
 
 class TxtNLP:
     def __init__(self,filename):
+        self.model = spacy.load('en_core_web_sm')
         self.sentences = None
-        self.tokens = None
-        self.pos_tags = None
-        self.nlp_dict = []  # List that contains a dict for each sentence,
-        # every token of the sentence is a key, the value is a (named) tuple (or list?),
-        # storing tag, and lemma
+        self.tokens = []
+        self.tags = []
+        self.lemma = []
         f = open(filename, mode='r')
-        self.full_text = ''
+        full_text = ''
         for line in f:
             line = line.strip()
-            self.full_text = self.full_text + ' ' + line
+            full_text = full_text + ' ' + line
         f.close()
+        self.sentences = [sentence for sentence in nltk.sent_tokenize(full_text)]
+        for sentence in self.sentences:
+            self.process_sentence(sentence)
 
-    def sentence_split(self):
-        self.sentences = nltk.sent_tokenize(self.full_text,language='english')
-        logging.debug(self.sentences)
-        return
-
-    def tokenize(self):
-        self.tokens = [nltk.tokenize.word_tokenize(sentence, language='english') for sentence in self.sentences]
+    def process_sentence(self, sentence):
+        process_sentences = self.model(sentence)
+        # tokenize sentences
+        self.tokens.append([token.text for token in process_sentences])
         logging.debug(self.tokens)
-        return
+        self.tags.append([token.tag_ for token in process_sentences])
+        logging.debug(self.tags)
+        self.lemma.append([token.lemma_ for token in process_sentences])
+        logging.debug(self.lemma)
 
-    def tagging(self):
-        self.pos_tags = [nltk.pos_tag(tokens) for tokens in self.tokens]
-        logging.debug(self.pos_tags)
-        return
-    
     def write(self, filename):
         with open(filename, mode='w') as file:
-            for sentence in self.pos_tags:
-                for token, tag in sentence:
-                    file.write(token + '\t' + tag + '\n')
+            for j in range(len(self.tokens)):
+                for i in range(len(self.tokens[j])):
+                    file.write(self.tokens[j][i] + '\t' + self.tags[j][i] + '\t' + self.lemma[j][i] + '\n')
                 file.write('\n')
 
 
 if __name__ == "__main__":
     logging.basicConfig(filename='enron_log.log',level=logging.DEBUG, format='%(asctime)s %(levelname)s: %(message)s')
     test = TxtNLP('0006.2003-12-18.GP.spam.txt')
-    test.sentence_split()
-    test.tokenize()
-    test.tagging()
+    #test.process()
+    #test.tokenize()
+    #test.tagging()
     test.write('nlp_processed.txt')
