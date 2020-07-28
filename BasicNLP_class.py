@@ -1,17 +1,13 @@
 # Hannah Peuckmann
 # Matr.Nr.: 791996
-# WiSe20 20.06.20
-# class to process the enron e-mail corpus
+# WiSe20 28.06.20
+# class for basic nlp processing of the enron e-mail corpus
 
 import spacy
 
 import nltk
 
 import logging
-
-
-
-# multiprocessing!
 
 
 class BasicNLP:
@@ -52,31 +48,9 @@ class BasicNLP:
                     file.write(self.tokens[j][i] + '\t' + self.tags[j][i] + '\t' + self.lemma[j][i] + '\n')
                 file.write('\n')
 
-def extract_features(text):
-    count_up = 0
-    count_special = 0
-    count_white = 0
-    count_hyphens = 0
-    for char in text:
-        if char.isupper():
-            count_up += 1
-        if not char.isalpha():
-            if char.isspace():
-                count_white += 1
-            else:
-                count_special += 1
-                if char == '-':
-                    count_hyphens += 1
-    return count_up, count_special, count_hyphens, count_white
-
-
-
-def write_features(self, filename):
-    pass
 
 if __name__ == "__main__":
-    logging.basicConfig(filename='enron_log.log',level=logging.DEBUG, format='%(asctime)s %(levelname)s: %(message)s')
+    logging.basicConfig(filename='TxtProcess_log.log',level=logging.DEBUG, format='%(asctime)s %(levelname)s: %(message)s')
     test = BasicNLP('0006.2003-12-18.GP.spam.txt')
     test.basic_process_file()
     test.write_to_file('Data/enron_ttl_testdata/ttl_spam_test/0006.2003-12-18.GP.spam.txt')
-    logging.debug(extract_features(test.full_text))
