@@ -12,7 +12,7 @@ import logging
 
 class Features:
     def __init__(self, file):
-        f = open(file, mode='r')
+        f = open(file, encoding='iso-8859-2', mode='r')
         self.full_text = ''
         for line in f:
             line = line.strip()
@@ -20,6 +20,7 @@ class Features:
         f.close()
         features = namedtuple('features', 'uppercase special_chars hyphens whitespace')
         self.features = features(*self.extract_features())
+        self.normalised_features = features(*self.normalise_features())
         logging.debug(self.features)
 
     def extract_features(self):
@@ -39,19 +40,16 @@ class Features:
                         count_hyphens += 1
         return count_up, count_special, count_hyphens, count_white
 
+    def normalise_features(self):
+        if self.features:
+            chars = len(self.full_text)
+            return self.features.uppercase/chars, \
+                   self.features.special_chars/chars, \
+                   self.features.hyphens/chars, \
+                   self.features.whitespace/chars
 
 
-    def write_features(self, filename):
-        with open(filename, mode='w') as csv:
-            csv.write(str(self.features.uppercase)
-                    + ','
-                    + str(self.features.special_chars)
-                    + ','
-                    + str(self.features.hyphens)
-                    + ','
-                    + str(self.features.whitespace)
-                    )
-        return
+
 
 if __name__ == "__main__":
     logging.basicConfig(filename='Features_log.log',level=logging.DEBUG, format='%(asctime)s %(levelname)s: %(message)s')
