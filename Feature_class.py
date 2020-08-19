@@ -8,7 +8,7 @@ from collections import namedtuple
 
 import logging
 
-# features normalisieren! -> textlänge
+
 
 class Features:
     def __init__(self, file):
