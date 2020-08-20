@@ -1,7 +1,7 @@
 # Hannah Peuckmann
 # Matr.Nr.: 791996
-# WiSe20 28.06.20
-# class to extract features from the enron e-mail corpus
+# WiSe20 20.08.20
+# class to extract features for single txt file
 
 
 from collections import namedtuple
@@ -15,15 +15,21 @@ class Features:
         f = open(file, encoding='iso-8859-2', mode='r')
         self.full_text = ''
         for line in f:
+            # no f.read(), get rid of \n
             line = line.strip()
             self.full_text = self.full_text + ' ' + line
         f.close()
         features = namedtuple('features', 'uppercase special_chars hyphens whitespace')
+        # create namedtuple of returnvalues
         self.features = features(*self.extract_features())
         self.normalised_features = features(*self.normalise_features())
         logging.debug(self.features)
 
+    ### brauch i net, hier schon normalisieren?
     def extract_features(self):
+        '''iterates over eacht character,
+           counts whitespace, hyphens, special characters and uppercase letters
+           returns absolut values '''
         count_up = 0
         count_special = 0
         count_white = 0
@@ -41,6 +47,7 @@ class Features:
         return count_up, count_special, count_hyphens, count_white
 
     def normalise_features(self):
+        '''normalises absolut features by total number of characters '''
         if self.features:
             chars = len(self.full_text)
             return self.features.uppercase/chars, \
