@@ -8,6 +8,10 @@ from collections import namedtuple
 
 import logging
 
+import nltk
+
+
+
 
 
 class Features:
@@ -19,24 +23,22 @@ class Features:
             line = line.strip()
             self.full_text = self.full_text + ' ' + line
         f.close()
-        features = namedtuple('features', 'uppercase special_chars hyphens whitespace')
+        features = namedtuple('features', 'exclamation special_chars hyphens whitespace total_tokens pronouns')
         # create namedtuple of returnvalues
-        self.features = features(*self.extract_features())
-        self.normalised_features = features(*self.normalise_features())
-        logging.debug(self.features)
+        #self.normalised_features = features(*(self.extract_character_features() + self.extract_token_features()))
+        self.normalised_features = features(*(self.extract_character_features() + self.extract_token_features()))
+        logging.debug(self.normalised_features)
 
-    ### brauch i net, hier schon normalisieren?
-    def extract_features(self):
+    def extract_character_features(self):
         '''iterates over eacht character,
            counts whitespace, hyphens, special characters and uppercase letters
            returns absolut values '''
-        count_up = 0
+        count_exclamation = 0
         count_special = 0
         count_white = 0
         count_hyphens = 0
+        total_chars = len(self.full_text)
         for char in self.full_text:
-            if char.isupper():
-                count_up += 1
             if not char.isalpha():
                 if char.isspace():
                     count_white += 1
@@ -44,21 +46,21 @@ class Features:
                     count_special += 1
                     if char == '-':
                         count_hyphens += 1
-        return count_up, count_special, count_hyphens, count_white
+                    if char =='!':
+                        count_exclamation += 1
+        return count_exclamation/total_chars, count_special/total_chars, count_hyphens/total_chars, count_white/total_chars
 
-    def normalise_features(self):
-        '''normalises absolut features by total number of characters '''
-        if self.features:
-            chars = len(self.full_text)
-            return self.features.uppercase/chars, \
-                   self.features.special_chars/chars, \
-                   self.features.hyphens/chars, \
-                   self.features.whitespace/chars
-
+    def extract_token_features(self):
+        tokens = nltk.word_tokenize(self.full_text)
+        total_tokens = len(tokens)
+        pronouns = 0
+        for tag_pair in nltk.pos_tag(tokens):
+            if tag_pair[1] == 'PRP':
+                pronouns += 1
+        return total_tokens, pronouns/total_tokens
 
 
 
 if __name__ == "__main__":
     logging.basicConfig(filename='Features_log.log',level=logging.DEBUG, format='%(asctime)s %(levelname)s: %(message)s')
     test = Features('0006.2003-12-18.GP.spam.txt')
-    test.extract_features()

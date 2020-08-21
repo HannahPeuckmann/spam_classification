@@ -9,10 +9,12 @@ import logging
 
 logging.basicConfig(filename='main_log.log',level=logging.INFO, format='%(asctime)s %(levelname)s: %(message)s')
 
-
+### to do: weitere features, progress bar, normalisieren, unit tests, assertions, docstrings, readme, think about main
 
 def main():
-    classifier = SpamClassifier('Data/sum_features_extracted.csv')
+    classifier = SpamClassifier()
+    #classifier = SpamClassifier('Data/sum_features_extracted.csv')
+    classifier.train('Data/train.csv', 'Data/class_features.csv', 'Data/single_features.csv')
     print(classifier.evaluate('Data/val.csv', 'Data/predictions.csv'))
     return
 

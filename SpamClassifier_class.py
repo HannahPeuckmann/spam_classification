@@ -17,7 +17,7 @@ logging.basicConfig(filename='spamClassifier_log.log',level=logging.INFO, format
 class SpamClassifier:
     '''  '''
     def __init__(self, extract_features=None):
-        # agregated features of ham and spam
+        # agregated features of ham and spam class
         # from file
         if extract_features != None:
                 features = open(extract_features, mode='r')
@@ -29,22 +29,22 @@ class SpamClassifier:
             self.sum_features_spam = []
 
     def train(self, train_csv, class_features_filename, file_features_filename):
+        print('training')
         train_file = open(train_csv, mode='r')
         class_features = open(class_features_filename, mode='w')
         file_features = open(file_features_filename, mode='w')
-        sum_features_spam = [0,0,0,0]
-        sum_features_ham = [0,0,0,0]
+        sum_features_spam = [0,0,0,0,0,0]
+        sum_features_ham = [0,0,0,0,0,0]
         total_ham = 0
         total_spam = 0
         # feature extraction for each file
         for line in train_file:
+            ### methode hierfür schreiben?
             line = line.strip()
             line = line.split(',')
             path = line[0]
             target = line[1]
             feature_obj = Features(path)
-            feature_obj.extract_features() ### weglassen? brauch ich net
-            feature_obj.normalise_features()
             if target == 'spam':
                 total_spam += 1
                 # sums elements at the same index of the two lists
@@ -53,36 +53,14 @@ class SpamClassifier:
                 total_ham += 1
                 sum_features_ham = list(map(add, sum_features_ham, list(feature_obj.normalised_features)))
             # write features per file to csv
-            file_features.write(target
-                                    + ','
-                                    + str(feature_obj.normalised_features.uppercase)
-                                    + ','
-                                    + str(feature_obj.normalised_features.special_chars)
-                                    + ','
-                                    + str(feature_obj.normalised_features.hyphens)
-                                    + ','
-                                    + str(feature_obj.normalised_features.whitespace)
-                                    + '\n'
-                                    )
+            file_features.write(target + ','.join(map(str, str(feature_obj.normalised_features))) + '\n')
         # normalise class features
         self.sum_features_spam = [element/total_spam for element in sum_features_spam]
         self.sum_features_ham = [element/total_ham for element in sum_features_ham]
         # safe class features to csv
-        ### geht das schöner? kürzer? bestimmt
-        class_features.write('spam' + ','
-                        + str(self.sum_features_spam[0]) + ','
-                        + str(self.sum_features_spam[1]) + ','
-                        + str(self.sum_features_spam[2]) + ','
-                        + str(self.sum_features_spam[3]) + '\n'
-                        )
-        class_features.write('ham' + ','
-                        + str(self.sum_features_ham[0]) + ','
-                        + str(self.sum_features_ham[1]) + ','
-                        + str(self.sum_features_ham[2]) + ','
-                        + str(self.sum_features_ham[3])
-                        )
+        class_features.write('spam,' + ','.join(map(str, self.sum_features_spam)))
+        class_features.write('ham' + ','.join(map(str, self.sum_features_ham)))
         return
-
 
     def predict(self, mail):
         '''predicts class for single mail file,
@@ -103,6 +81,7 @@ class SpamClassifier:
             return prediction(mail_spam_dist, 'spam')
 
     def evaluate(self, val_set, predictions_file):
+        print('evaluating')
         predictet_data = open(predictions_file, mode='w')
         val_data = open(val_set, mode='r')
         right = 0
@@ -115,7 +94,7 @@ class SpamClassifier:
             path = line[0]
             target = line[1]
             prediction = self.predict(path)
-            predictet_data.write(path + str(prediction.distance) + prediction.prediction + '\n')
+            predictet_data.write(path + ',' + str(prediction.distance) + ',' + prediction.prediction + '\n')
             if target == prediction.prediction:
                 right += 1
             else:
