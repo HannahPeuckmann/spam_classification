@@ -1,0 +1,13 @@
+Hallo Hannah,
+
+danke, dass ich dein Projekt reviewen durfte! Ich hab dir bei deinen letzten Commits Kommentare dagelassen: 2f2a52d69d944af67ec43a0e09a6a9ee68bd5bee und 4e9cab3892e7131f56d4247c65fb1e20299d5979
+
+Ich finde, du hast die Aufgabe super gelöst: Der Code läuft durch, macht was er soll und die Laufzeit ist mMn angemessen. Zur Accuracy muss ich ja nichts sagen, mir ist nur aufgefallen, dass der Klassifikator einen starken bias für Spam hat.
+
+Ich war beeindruckt, wie kurz und effizient dein Code ist. Du brauchst ja auch fast keine externen Module und sogar Pandas nur zum Aufsplitten des Korpus'. Vor allem die separate Features-Klasse hat mir sehr gut gefallen, auch in Hinblick auf Encapsulation!
+
+An manchen Stellen hätte ich mir noch mehr Kommentare gewünscht, z.B. wofür eine Variable steht, wenn es aus dem Namen nicht ersichtlich wird. Dann hätte ich nicht in die csv-Dateien reinschauen müssen. Und das Programm läuft sehr "still"; ich persönlich würde mich über ein print-Statement wie "finished training" beendet, damit ich weiß, dass das Programm fertig und nicht abgebrochen ist. 
+Du könntest dir noch Gedanken machen, wo dein Programm abstürzen oder es unerwartetes Verhalten geben könnte (z.B. die User-Eingaben überprüfen). 
+
+Liebe Grüße,
+Noel :)
