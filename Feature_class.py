@@ -28,7 +28,6 @@ class Features:
         # nouns in subject line
         self.headline_nouns = self.extract_nn(nltk.word_tokenize(self.subject_line))
         # nouns in whole text
-        self.text_nouns = self.extract_nn( nltk.word_tokenize(self.full_text))
         logging.debug(self.normalised_features)
 
     def extract_character_features(self):

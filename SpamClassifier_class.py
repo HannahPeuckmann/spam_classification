@@ -6,6 +6,8 @@
 
 import logging
 
+import re
+
 from operator import add, sub
 
 from Feature_class import Features
@@ -53,8 +55,14 @@ class SpamClassifier:
             target = line[1]
             feature_obj = Features(path)
             features = list(feature_obj.normalised_features)
-            #### evtl mit re nach head nouns in full text suchen, maybe schneller als nltk taggen
-            spam_headwords = sum(1 for token in feature_obj.text_nouns if token in self.most_common_nn)
+            # search for spam headlines words
+            for token in self.most_common_nn:
+                # escaping special characters in
+                token = re.escape(token)
+                # only match whole tokens, no subtokens
+                token = r"\b" + token + r"\b"
+                matches = re.findall(token, feature_obj.full_text)
+                spam_headwords += len(matches)
             # normalise
             spam_headwords = spam_headwords/len(feature_obj.full_text)
             features.append(spam_headwords)
