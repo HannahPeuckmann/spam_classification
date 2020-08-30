@@ -1,3 +1,6 @@
+# Spam Klassifikator
+
+Das Projekt implementiert einen binären Klassifikator für spam und ham.
 
 # Voraussetzungen (Ubuntu)
 
