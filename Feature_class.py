@@ -1,6 +1,6 @@
 # Hannah Peuckmann
 # Matr.Nr.: 791996
-# WiSe20 20.08.20
+# WiSe20 30.08.20
 # class to extract features for single txt file
 
 
@@ -12,34 +12,31 @@ import nltk
 
 
 class Features:
-    '''Class to extract features of a textfile'''
+    '''Class to extract features of a textfile,
+       textfile needs to be iso-8859-2.'''
     def __init__(self, file):
         f = open(file, encoding='iso-8859-2', mode='r')
         self.full_text = ''
         self.subject_line = f.readline().strip()
         self.full_text += self.subject_line
         for line in f:
-            # no f.read(), get rid of \n
+            # not f.read(), get rid of \n
             line = line.strip()
-            self.full_text = self.full_text + ' ' + line
+            self.full_text += ' ' + line
         f.close()
-        self.tokens = nltk.word_tokenize(self.subject_line)
         self.normalised_features = self.extract_character_features()
         # nouns in subject line
         self.headline_nouns = self.extract_nn(nltk.word_tokenize(self.subject_line))
         # nouns in whole text
-        self.text_nouns = self.extract_nn(self.tokens)
+        self.text_nouns = self.extract_nn( nltk.word_tokenize(self.full_text))
         logging.debug(self.normalised_features)
 
     def extract_character_features(self):
-        '''iterates over eacht character,
-           counts whitespace, hyphens, special characters and exclamation marks
-           returns absolut values '''
+        '''Iterates over eacht character,
+           counts whitespace, hyphens, special characters and exclamation marks,
+           returns the absolut values '''
         # counters for features
-        count_exclamation = 0
-        count_special = 0
-        count_white = 0
-        count_hyphens = 0
+        count_exclamation = count_special = count_white = count_hyphens = 0
         total_chars = len(self.full_text)
         # iterate over each character
         for char in self.full_text:
@@ -58,7 +55,7 @@ class Features:
                 count_white/total_chars]
 
     def extract_nn(self, text):
-        ''' tags a list of tokens and searches for nouns'''
+        ''' Tags a list of tokens and searches for nouns'''
         noun_tags = ['NN', 'NNS', 'NNP', 'NNPS']
         tags = nltk.pos_tag(text)
         nouns = [x[0] for x in tags if x[1] in noun_tags]
