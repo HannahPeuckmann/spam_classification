@@ -43,7 +43,7 @@ def predict(modi_input):
 
 def evaluate(modi_input):
     classifier = SpamClassifier(modi_input[0])
-    (right, wrong, total, accuracy) = classifier.evaluate(modi_input[1],
+    (right, wrong,_ , accuracy) = classifier.evaluate(modi_input[1],
                                                           modi_input[2])
     logging.info('correct classified: ' + str(right))
     logging.info('wrong classified: ' + str(wrong))
