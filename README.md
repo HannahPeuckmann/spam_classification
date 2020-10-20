@@ -1,51 +1,49 @@
-# Spam Klassifikator
+# spam classifier
 
-Das Projekt implementiert einen binären Klassifikator für spam und ham.
-
-# Voraussetzungen (Ubuntu)
+The project implements a binary classifier for spam and ham.
+# Requirements (Ubuntu)
 
 * Python 3.6.9
 
-# Nutzung
+# Usage
 
-`$ python3 main.py --data KORPUS_DIRECTORY KORPUS_SPLIT_DIRECTORY`
+`$ python3 main.py --data CORPUS_DIRECTORY CORPUS_SPLIT_DIRECTORY`
 
-*KORPUS_DIRECTORY* Pfad zu einer Datei welche die sechs unziped Dateien des Enron Email Dataset enthält.
+*CORPUS_DIRECTORY* Path to a directory that contains the six unziped files of the Enron Email Dataset.
 
-*KORPUS_SPLIT_DIRECTORY* Datei in der die .csv-Dokumente für train, validate und test gespeichert werden.
+*CORPUS_SPLIT_DIRECTORY* Directory to save the .csv-files for train, validate and test.
 
-`$ python3 main.py --train KORPUS_CSV CLASS_FEATURE_CVS SINGLE_MAIL_FEATURE_CSV`
+`$ python3 main.py --train CORPUS_CSV CLASS_FEATURE_CVS SINGLE_MAIL_FEATURE_CSV`
 
-*KORPUS_CSV* Pfad zu einem .csv-Dokument welches alle Dateipfade der Mails enthält, auf denen trainiert werden soll.
+*CORPUS_CSV* Path to a .csv-file that contains all paths of the mails the classifier is to be trained on.
 
-*CLASS_FEATURE_FILE* .csv-Dokument in dem die aggregierten features der Klassen gespeichert werden soll. 
+*CLASS_FEATURE_FILE* .csv-file to save the aggregated features of the two classes. 
 
-*SINGLE_MAIL_FEATURE_FILE* .csv-Dokument in dem die features pro Mail gespeichert werden.
+*SINGLE_MAIL_FEATURE_FILE* .csv-file to save the features of each single mail.
 
 `$ python3 main.py --predict CLASS_FEATURE_CSV MAIL_FILE`
 
-*CLASS_FEATURE_FILE* Dateipfad zu der bei --train erstellten .csv-Dokument, welches die aggregierten features enthält.
+*CLASS_FEATURE_CSV* Path to the .csv-file that holds the aggregated featurs that was created by --train.
 
-*MAIL_FILE* Dateipfad einer Mail in txt Format, für die eine Vorhersage getroffen wird.
+*MAIL_FILE* Path to the mail a prediction should be made for. The mail needs to be a txt-file.
 
-`$ python3 main.py --evaluate CLASS_FEATURE_CSV TEST_KORPUS_CSV PREDICTIONS.CSV`
+`$ python3 main.py --evaluate CLASS_FEATURE_CSV TEST_CORPUS_CSV PREDICTIONS.CSV`
 
-*CLASS_FEATURE_CSV* Dateipfad zu der bei --train erstellten .csv-Dokument, welches die aggregierten features enthält.
+*CLASS_FEATURE_CSV* Path to the .csv-file that holds the aggregated featurs that was created by --train.
 
-*TEST_KORPUS_CSV* Dateipfad zu einem .csv-Dokument welches alle Dateipfade der Mails enthält für die der Klassififzierer evaluiert werden soll.
+*TEST_CORPUS_CSV* Path to a .csv-file that holds the paths of the mails that should be classified.
 
-# Korpus
+# Corpus
 
-Der genutzte Korpus ist der [Enron Email Dataset](http://www2.aueb.gr/users/ion/data/enron-spam/)
+The corpus used is the [Enron Email Dataset](http://www2.aueb.gr/users/ion/data/enron-spam/)
 
-# Testdaten erstellen
+# Creatingt the testdata
 
-Zum Erstellen der Testdaten, das Aufteilen des Korpus, kann der Modus --data verwendet werden. Es werden fünf csv-Dokumente erstellt, 'train.csv', 'test.csv', 'val.csv', 'all_ham.csv' und 'all_spam.csv' welche die Dateipfade der zugehörigen Mails enthalten. 
+To split the corpus the mode --data can be used. Five csv-files are created, 'train.csv', 'test.csv', 'val.csv', 'all_ham.csv' und 'all_spam.csv' which holds the paths to the associated mails.
 
+# Sample calls
 
-# Beispielaufruf
-
-`$ Python3 main.py --data Enron_spam_sorpus Split_Data`
+`$ Python3 main.py --data Enron_spam_corpus Split_Data`
 
 `$ Python3 main.py --train Split_Data/train.csv Data/class_features.csv Data/single_features.csv`
 
@@ -55,7 +53,7 @@ Zum Erstellen der Testdaten, das Aufteilen des Korpus, kann der Modus --data ver
 
   
 
-# Autorin
+# Author
 Hannah Peuckmann
 peuckmann@uni-potsdam.de
-Universität Potsdam, Matrikelnummer 791996
+Universität Potsdam, Matriculation number 791996

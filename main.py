@@ -56,8 +56,8 @@ def user_mode(cmd_input):
         Identifies the intended user mode and selects the corresponding function '''
     # Error message
     synopsis = 'Invalid Input! Propper usage:\n'\
-                        + '$ python3 main.py --data KORPUS_DIRECTORY KORPUS_SPLIT_DIRECTORY \n'\
-                        + '$ python3 main.py --train KORPUS_CSV CLASS_FEATURE_CVS SINGLE_MAIL_FEATURE_CSV \n'\
+                        + '$ python3 main.py --data CORPUS_DIRECTORY CORPUS_SPLIT_DIRECTORY \n'\
+                        + '$ python3 main.py --train CORPUS_CSV CLASS_FEATURE_CVS SINGLE_MAIL_FEATURE_CSV \n'\
                         + '$ python3 main.py --predict CLASS_FEATURE_CSV MAIL_FILE \n'\
                         + '$ python3 main.py --evaluate CLASS_FEATURE_CSV TEST_KORPUS_CSV PREDICTIONS.CSV \n'\
                         + 'See the README for more details.\n'
