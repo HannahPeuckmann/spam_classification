@@ -37,7 +37,7 @@ The project implements a binary classifier for spam and ham.
 
 The corpus used is the [Enron Email Dataset](http://www2.aueb.gr/users/ion/data/enron-spam/)
 
-# Creatingt the testdata
+# Creating the testdata
 
 To split the corpus the mode --data can be used. Five csv-files are created, 'train.csv', 'test.csv', 'val.csv', 'all_ham.csv' und 'all_spam.csv' which holds the paths to the associated mails.
 
